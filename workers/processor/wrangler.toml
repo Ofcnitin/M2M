@@ -1,0 +1,29 @@
+name = "m2m-processor"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "m2m-media"
+
+# Private bucket for mature (restricted/) media. Must NOT be bound to the public CDN
+# domain. Set bucket_name to the real private bucket (matches R2_PRIVATE_BUCKET in the app).
+[[r2_buckets]]
+binding = "MEDIA_PRIVATE"
+bucket_name = "m2m-media-private"
+
+[[queues.consumers]]
+queue = "m2m-uploads"
+max_batch_size = 20
+max_batch_timeout = 5
+max_retries = 6
+dead_letter_queue = "m2m-uploads-dlq" # create it: wrangler queues create m2m-uploads-dlq. Poison messages stop here instead of looping.
+
+[vars]
+SUPABASE_URL = "https://YOUR-PROJECT.supabase.co"
+# wrangler secret put SUPABASE_SERVICE_KEY
+# Create the queue, then: wrangler r2 bucket notification create m2m-media --event-type object-create --queue m2m-uploads
+
+[triggers]
+crons = ["*/5 * * * *", "0 3 * * *"] # publishes due scheduled chapters via run_scheduled_jobs()
+# The 03:00 UTC cron runs the orphan scan (dry run only). Approve candidates in /admin.
