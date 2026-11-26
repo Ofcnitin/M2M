@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap");
+@tailwind base; @tailwind components; @tailwind utilities;
+:root{--bg:#e8eef6;--hi:#fff;--lo:#c3cfde;--ink:#000;--mute:#5b6878;--blue:#7fb6f0;--blue2:#d6e9fb}
+@media (prefers-color-scheme:dark){:root{--bg:#15181d;--hi:#21262d;--lo:#07080a;--ink:#f2f6fb;--mute:#8d99a8;--blue:#5aa2ea;--blue2:#1d2a3a}}
+body{background:var(--bg);color:var(--ink)}
+@layer components{
+ .neu{@apply rounded-3xl bg-bg;box-shadow:7px 7px 16px var(--lo),-7px -7px 16px var(--hi)}
+ .neu-sm{@apply rounded-2xl bg-bg;box-shadow:4px 4px 9px var(--lo),-4px -4px 9px var(--hi)}
+ .neu-in{@apply rounded-2xl bg-bg;box-shadow:inset 5px 5px 11px var(--lo),inset -5px -5px 11px var(--hi)}
+ .btn{@apply neu-sm px-4 py-2 text-sm transition-shadow active:[box-shadow:inset_4px_4px_9px_var(--lo),inset_-4px_-4px_9px_var(--hi)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky}
+ .btn-primary{@apply btn bg-ink font-semibold;color:var(--bg)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
